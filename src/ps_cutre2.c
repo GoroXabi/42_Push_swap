@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:30:32 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/29 13:50:47 by xortega          ###   ########.fr       */
+/*   Updated: 2024/02/29 14:02:16 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,7 +353,7 @@ void buble(t_stack **stack_a, int total_ints)
 	}
 
 }
-void algoritmo_cutre2(t_stack **stack_a, __unused t_stack **stack_b, __unused int total_ints)
+void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b, int total_ints)
 {
 	//buble(stack_a);
 	int  to_buble;
