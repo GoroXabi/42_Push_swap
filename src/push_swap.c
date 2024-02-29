@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 09:16:18 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/27 13:55:44 by xortega          ###   ########.fr       */
+/*   Updated: 2024/02/29 13:37:08 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,15 @@ int	main(int argc, char const *argv[])
 	check_duplicates(&stack_a);
 	stack_a = indexing_ints(total_ints, &stack_a);
 	init_stack_b(total_ints, &stack_b);
-	//print_list(&stack_a, &stack_b);
-	algoritmo_cutre2(&stack_a, &stack_b, total_ints);
+	if (!is_sort(&stack_a))
+	{
+		if (total_ints == 2)
+			sa(&stack_a);
+		else if (total_ints == 3)
+			case_3(&stack_a);
+		else	
+			algoritmo_cutre2(&stack_a, &stack_b, total_ints);
+	}
 	//if (total_ints == 3)
 	//	case_3(&stack_a);
 	//if (total_ints == 5)
