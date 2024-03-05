@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:30:32 by xortega           #+#    #+#             */
-/*   Updated: 2024/03/05 14:01:54 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/05 14:13:27 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,14 @@ t_stack	*find_close_to_small(t_stack **stack, int total_ints, int room_up, int t
 		}
 		current = current->next;
 	}
-	if (anti_foe->number == 0)
-		free(anti_foe);
+//	if (anti_foe->number == 0)
+//		free(anti_foe);
 	if (foe->number == INT_MAX && anti_foe->number == INT_MAX)
 		return(find_close_to_small(stack, total_ints, room_up + 5, threshold));
+	else if(anti_foe->number == INT_MAX)
+		return (foe);
+	else if(foe->number == INT_MAX)
+		return (anti_foe);
 	else if (foe->position <= (left_in_stack(stack) - anti_foe->position))
 		return(foe);
 	else if (foe->position > (left_in_stack(stack) - anti_foe->position))
