@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:23:14 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/27 13:54:12 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/02 10:29:07 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	sa(t_stack **stack_a)
 	ft_printf("sa\n");
 }
 //ra: rotate_a; desplaza todos los argumentos del stack a una posicion hacia arrba, el primero pasando a ser el ultimo;
-void	ra(t_stack **stack_a)
+void	ra(t_stack **stack_a, t_buffer **movements)
 {
 	int up_number;
 	t_stack *up;
@@ -48,11 +48,11 @@ void	ra(t_stack **stack_a)
 	}
 	up->number = up_number;
 	refesh_index(stack_a);
-	ft_printf("ra\n");
+	buffer(movements, 1);
 }
 
 //rra: reverse_rotate_a; desplaza todos los argumentos del stack a una posicion hacia abajo, el ultimo pasando a ser el primero;
-void	rra(t_stack **stack_a)
+void	rra(t_stack **stack_a, t_buffer **movements)
 {
 	int		before_number;
 	int		after_number;
@@ -76,10 +76,10 @@ void	rra(t_stack **stack_a)
 		down = down->next;
 	down->number = before_number;
 	refesh_index(stack_a);
-	ft_printf("rra\n");
+	buffer(movements, 3);
 }
 //pa: push_a; pasa el argumento mas arriba del stack b a encima del argumento mas arriba del stack a;
-void	pa(t_stack **stack_a, t_stack **stack_b)
+void	pa(t_stack **stack_a, t_stack **stack_b, t_buffer **movements)
 {
 	t_stack	*up_a;
 	t_stack	*up_b;
@@ -104,5 +104,5 @@ void	pa(t_stack **stack_a, t_stack **stack_b)
 	up_b->number = 0;
 	refesh_index(stack_a);
 	refesh_index(stack_b);
-	ft_printf("pa\n");
+	buffer(movements, -1);
 }

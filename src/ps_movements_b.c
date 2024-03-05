@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:59:29 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/27 13:55:22 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/01 17:03:09 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	sb(t_stack **stack_b)
 	ft_printf("sb\n");
 }
 //rb: rotate_b; desplaza todos los argumentos del stack b una posicion hacia arrba, el primero pasando a ser el ultimo;
-void	rb(t_stack **stack_b)
+void	rb(t_stack **stack_b, t_buffer **movements)
 {
 	int up_number;
 	t_stack *up;
@@ -48,11 +48,11 @@ void	rb(t_stack **stack_b)
 	}
 	up->number = up_number;
 	refesh_index(stack_b);
-	ft_printf("rb\n");
+	buffer(movements, 2);
 }
 
 //rrb: reverse_rotate_b; desplaza todos los argumentos del stack b una posicion hacia abajo, el ultimo pasando a ser el primero;
-void	rrb(t_stack **stack_b)
+void	rrb(t_stack **stack_b, t_buffer **movements)
 {
 	int		before_number;
 	int		after_number;
@@ -76,10 +76,10 @@ void	rrb(t_stack **stack_b)
 		down = down->next;
 	down->number = before_number;
 	refesh_index(stack_b);
-	ft_printf("rrb\n");
+	buffer(movements, 4);
 }
 //pb: push_b; pasa el argumento mas arriba del stack a encima del argumento mas arriba del stack b;
-void	pb(t_stack **stack_a, t_stack **stack_b)
+void	pb(t_stack **stack_a, t_stack **stack_b, t_buffer **movements)
 {
 	t_stack	*up_a;
 	t_stack	*up_b;
@@ -104,5 +104,5 @@ void	pb(t_stack **stack_a, t_stack **stack_b)
 	up_a->number = 0;
 	refesh_index(stack_a);
 	refesh_index(stack_b);
-	ft_printf("pb\n");
+	buffer(movements, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 09:16:18 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/29 13:37:08 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/01 17:09:41 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ int	main(int argc, char const *argv[])
 {
 	t_stack *stack_a;
 	t_stack *stack_b;
+	t_buffer *movements;
 	int 	total_ints;
+
 
 	if (argc == 1)
 	{
@@ -67,6 +69,7 @@ int	main(int argc, char const *argv[])
 	check_argv(argv);
 	stack_a = NULL;
 	stack_b = NULL;
+	movements = NULL;
 	total_ints = get_ints(argv, argc, &stack_a);
 	check_duplicates(&stack_a);
 	stack_a = indexing_ints(total_ints, &stack_a);
@@ -75,10 +78,10 @@ int	main(int argc, char const *argv[])
 	{
 		if (total_ints == 2)
 			sa(&stack_a);
-		else if (total_ints == 3)
-			case_3(&stack_a);
+		//else if (total_ints == 3)
+		//	case_3(&stack_a);
 		else	
-			algoritmo_cutre2(&stack_a, &stack_b, total_ints);
+			algoritmo_cutre2(&stack_a, &stack_b, &movements, total_ints);
 	}
 	//if (total_ints == 3)
 	//	case_3(&stack_a);

@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:30:32 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/29 14:02:16 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/05 12:22:43 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,59 @@ t_stack	*find_position(t_stack **stack, int position)
 	}
 	return(current);
 }
-t_stack	*find_close_to_small(t_stack **stack, int total_ints)
+
+t_stack *init_foe(void)
+{
+	t_stack *node;
+
+	node = malloc(sizeof(t_stack));
+	node->next = NULL;
+	node->number = INT_MAX;
+	node->position = 0;
+	return (node);
+}
+t_stack	*find_close_to_small(t_stack **stack, int total_ints, int room_up, int threshold)
 {
 	t_stack	*current;
-	int		anti_foe;
-	int		foe;
+	t_stack	*anti_foe;
+	t_stack	*foe;
+	int room_down;
 
+	if (room_up >= left_in_stack(stack))
+		return(find_small(stack));
 	current = tip(stack);
-	anti_foe = total_ints;
-	foe = 0;
+	foe = init_foe();
+	anti_foe = init_foe();
+	room_down = (left_in_stack(stack) - room_up);
 	while(current)
 	{
-		if (current->number <= total_ints/2 && current->position >= foe)	
-			foe = current->position;
-		if (current->number <= total_ints/2 && current->position <= anti_foe)	
-			anti_foe = current->position;
-		//ft_printf("current->number : %d |current foe : %d|current anti_foe : %d\n", current->number, foe, anti_foe);
+		if (current->number < foe->number && current->number < threshold && current->position < room_up && current->number < total_ints - 3)
+		{
+			if (foe->number == INT_MAX)
+				free(foe);
+			foe = current;
+		}
+		if (current->number < anti_foe->number && current->number < threshold && current->position > room_down && current->number < total_ints - 3)
+		{
+			if (anti_foe->number == INT_MAX)
+				free(anti_foe);
+			anti_foe = current;
+		}
 		current = current->next;
 	}
-	if (foe > (total_ints - anti_foe))
-			return(find_position(stack, foe));
-	else
-			return(find_position(stack, anti_foe));
-	return(current);
+//	if (anti_foe->number == 0)
+//		free(anti_foe);
+	if (foe->number == INT_MAX && anti_foe->number == INT_MAX)
+		return(find_close_to_small(stack, total_ints, room_up + 10, threshold));
+	else if (foe->position <= (left_in_stack(stack) - anti_foe->position))
+		return(foe);
+	else if (foe->position > (left_in_stack(stack) - anti_foe->position))
+		return(anti_foe);
+//	if (foe->position < anti_foe->position - left_in_stack(stack))
+//		return(foe);
+//	if (foe->position > anti_foe->position - left_in_stack(stack))
+//		return(anti_foe);
+	return(foe);
 }
 t_stack	*find_large(t_stack **stack)
 {
@@ -131,7 +161,7 @@ t_stack	*find_large(t_stack **stack)
 		return (current);
 	return (winner);
 }
-void	up_small(t_stack **stack_a)
+void	up_small(t_stack **stack_a, t_buffer **movements)
 {
 	while (tip(stack_a)->number != find_small(stack_a)->number)
 	{
@@ -139,25 +169,36 @@ void	up_small(t_stack **stack_a)
 			break;
 		if (find_small(stack_a)->position > ((left_in_stack(stack_a)) / 2)
 		&& find_small(stack_a)->position > 2)
-			rra(stack_a);
+			rra(stack_a, movements);
 		else
-			ra(stack_a);
+			ra(stack_a, movements);
 	}
 }
-void	up_close_to_small(t_stack **stack_a, int t_ints)
-{
-	while (tip(stack_a)->number >= (t_ints/2))
+void	up_close_to_small(t_stack **stack_a, t_buffer **movements, int threshold, int total_ints)
+{	
+	t_stack *to_up;
+	int		to_up_num;
+	int		tip_a;
+
+	to_up = find_close_to_small(stack_a, total_ints, 10, threshold);
+	to_up_num = to_up->number;
+	if (to_up_num == 0 || to_up_num > total_ints)
 	{
-		if (is_sort(stack_a))
-			break;
-		if (find_close_to_small(stack_a, t_ints)->position > ((left_in_stack(stack_a)) / 2)
-		&& find_close_to_small(stack_a, t_ints)->position > 2)
-			rra(stack_a);
+		free(to_up);
+		up_small(stack_a, movements);
+		return ;
+	}
+	tip_a = tip(stack_a)->number;
+	while (tip_a != to_up_num)
+	{
+		if (to_up->position >= left_in_stack(stack_a)/2)
+			rra(stack_a, movements);
 		else
-			ra(stack_a);
+			ra(stack_a, movements);
+		tip_a = tip(stack_a)->number;
 	}
 }
-void	up_by_num_b(t_stack **stack_b, int number)
+void	up_by_num_b(t_stack **stack_b, t_buffer **movements, int number)
 {
 	t_stack	*current;
 
@@ -175,12 +216,12 @@ void	up_by_num_b(t_stack **stack_b, int number)
 		if (is_sort(stack_b))
 			break;
 		if (current->position > ((left_in_stack(stack_b)) / 2) && current->position > 2)
-			rrb(stack_b);
+			rrb(stack_b, movements);
 		else
-			rb(stack_b);
+			rb(stack_b, movements);
 	}
 }
-void	down_by_num_b(t_stack **stack_b, int number)
+void	down_by_num_b(t_stack **stack_b, t_buffer **movements, int number)
 {
 	t_stack	*current;
 
@@ -198,12 +239,12 @@ void	down_by_num_b(t_stack **stack_b, int number)
 		if (is_sort(stack_b))
 			break;
 		if (current->position > ((left_in_stack(stack_b)) / 2) && current->position > 2)
-			rra(stack_b);
+			rra(stack_b, movements);
 		else
-			ra(stack_b);
+			ra(stack_b, movements);
 	}
 }
-void search_close_b(t_stack **stack_b, int number)//, int t_ints)
+void search_close_b(t_stack **stack_b, t_buffer **movements, int number)
 {
 	t_stack	*current;
 	//int		up_3;
@@ -215,13 +256,13 @@ void search_close_b(t_stack **stack_b, int number)//, int t_ints)
 	while (current)
 	{
 		if (current->number == number - 1)// && ((current->position < up_3) || current->position > down_3))
-			up_by_num_b(stack_b, (number - 1));
+			up_by_num_b(stack_b, movements, (number - 1));
 		else if (current->number == number + 1)// && (current->position < up_3 || current->position > down_3))
-			down_by_num_b(stack_b, (number + 1));
+			down_by_num_b(stack_b, movements, (number + 1));
 		current = current->next;
 	}
 }
-void search_next_b(t_stack **stack_b, int number)
+void search_next_b(t_stack **stack_b, t_buffer **movements, int number)
 {
 	t_stack	*current;
 	int		foe;
@@ -234,9 +275,9 @@ void search_next_b(t_stack **stack_b, int number)
 			foe = current->number;
 		current = current->next;
 	}
-	up_by_num_b(stack_b, foe);
+	up_by_num_b(stack_b, movements, foe);
 }
-void	case_3_bottom(t_stack **stack_a, int total_ints)
+void	case_3_bottom(t_stack **stack_a, int total_ints, t_buffer **movements)
 {
 	t_stack	*a;
 
@@ -244,35 +285,33 @@ void	case_3_bottom(t_stack **stack_a, int total_ints)
 	if (a->number == total_ints - 2 && !is_sort(stack_a))
 	{
 		sa(stack_a);
-		ra(stack_a);
+		ra(stack_a, movements);
 	}
 	else if (a->number == total_ints - 1)
 	{
 		if (a->next->number == total_ints - 2)
 			sa(stack_a);
 		else
-			rra(stack_a);
+			rra(stack_a, movements);
 	}
 	else if (a->number == total_ints)
 	{
 		if (a->next->number == total_ints - 2)
-			ra(stack_a);
+			ra(stack_a, movements);
 		else
 		{	
 			sa(stack_a);
-			rra(stack_a);
+			rra(stack_a, movements);
 		}
 	}
 }
-void back_to_a(t_stack **stack_a, t_stack **stack_b)
+void back_to_a(t_stack **stack_a, t_stack **stack_b, t_buffer **movements)
 {	
 	while (left_in_stack(stack_b) > 0)
 	{
-		up_by_num_b(stack_b, find_large(stack_b)->number);
-		pa(stack_a, stack_b);
+		up_by_num_b(stack_b, movements, find_large(stack_b)->number);
+		pa(stack_a, stack_b, movements);
 	}
-	
-	
 }
 int cost_cmp(int n1, int n2, int ints_left)
 {
@@ -314,7 +353,6 @@ int cost_cmp(int n1, int n2, int ints_left)
 	}
 	return(0);
 }
-
 void cost_check(t_stack **stack_a, t_stack **stack_b)
 {
 	t_stack	*current;
@@ -339,50 +377,40 @@ void cost_check(t_stack **stack_a, t_stack **stack_b)
 	if (cost_cmp(foe1->position, foe2->position, left_in_stack(stack_b)))
 		sa(stack_a);
 }
-void buble(t_stack **stack_a, int total_ints)
+//void buble(t_stack **stack_a, int total_ints)
+//{
+//	t_stack	*current;
+//
+//	current = tip(stack_a);
+//	while(!is_sort(stack_a))
+//	{
+//		if (current->number < current->next->number || current->number == total_ints)
+//			ra(stack_a);
+//		else
+//			sa(stack_a);
+//	}
+//
+//}
+void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b,  t_buffer **movements, int total_ints)
 {
-	t_stack	*current;
-
-	current = tip(stack_a);
-	while(!is_sort(stack_a))
-	{
-		if (current->number < current->next->number || current->number == total_ints)
-			ra(stack_a);
-		else
-			sa(stack_a);
-	}
-
-}
-void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b, int total_ints)
-{
-	//buble(stack_a);
-	int  to_buble;
+	int  threshold;
 	
-	to_buble = 40;
-	if (total_ints > 100)
-		to_buble = 200;
-	while (left_in_stack(stack_a) > to_buble)
+	threshold = total_ints/2;
+	while (left_in_stack(stack_a) > threshold && total_ints > 7)
 	{
-		if (tip(stack_a)->number <= total_ints - to_buble)
-		{
-			if (tip(stack_a)->next->number <= total_ints - to_buble)
-				cost_check(stack_a, stack_b);
-			if (tip(stack_a)->number <= total_ints - to_buble)
-			{
-				search_next_b(stack_b, tip(stack_a)->number);
-				pb(stack_a, stack_b);
-			}
-			else
-				ra(stack_a);
-		}
-		else
-			ra(stack_a);
+		up_close_to_small(stack_a, movements, threshold, total_ints);
+		search_next_b(stack_b, movements, tip(stack_a)->number);
+		pb(stack_a, stack_b, movements);
 	}
-	while (left_in_stack(stack_a) > 1)
+	threshold = total_ints - 3;
+	while (left_in_stack(stack_a) > 3 && total_ints > 7)
 	{
-		up_small(stack_a);
-		pb(stack_a, stack_b);
+		up_close_to_small(stack_a, movements, threshold, total_ints);
+		search_next_b(stack_b, movements, tip(stack_a)->number);
+		pb(stack_a, stack_b, movements);
 	}
-	//buble(stack_a, total_ints);
-	back_to_a(stack_a, stack_b);
+//	print_list(stack_a, stack_b, total_ints);
+	case_3_bottom(stack_a, total_ints, movements);
+//	print_list(stack_a, stack_b, total_ints);
+	back_to_a(stack_a, stack_b, movements);
 }

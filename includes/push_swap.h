@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 10:23:58 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/27 13:04:13 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/02 10:30:26 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void	check_duplicates(t_stack **stack_a);
 void	check_argv(const char *argv[]);
 //MOVEMENTS_A
 void	sa(t_stack **stack_a);
-void	ra(t_stack **stack_a);
-void	rra(t_stack **stack_a);
-void	pa(t_stack **stack_a, t_stack **stack_b);
+void	ra(t_stack **stack_a, t_buffer **movements);
+void	rra(t_stack **stack_a, t_buffer **movements);
+void	pa(t_stack **stack_a, t_stack **stack_b, t_buffer **movements);
 //MOVEMENTS_B
 void	sb(t_stack **stack_b);
-void	rb(t_stack **stack_b);
-void	rrb(t_stack **stack_b);
-void	pb(t_stack **stack_a, t_stack **stack_b);
+void	rb(t_stack **stack_b, t_buffer **movements);
+void	rrb(t_stack **stack_b, t_buffer **movements);
+void	pb(t_stack **stack_a, t_stack **stack_b, t_buffer **movements);
 //MOVEMENTS_AB
 void	ss(t_stack **stack_a, t_stack **stack_b);
 void	rr(t_stack **stack_a, t_stack **stack_b);
@@ -63,7 +63,14 @@ void	case_5(t_stack **stack_a, t_stack **stack_b, int total_ints);
 int		is_sort(t_stack **stack_a);
 void	refesh_index(t_stack **stack);
 //ALGORITMO_CUTRE
-void algoritmo_cutre(t_stack **stack_a, t_stack **stack_b, int total_ints);
+void 	algoritmo_cutre(t_stack **stack_a, t_stack **stack_b, int total_ints);
 //ALGORITMO_CUTRE2
 t_stack	*tip(t_stack **stack);
-void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b, int total_ints);
+void 	algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b, t_buffer **movements, int total_ints);
+//BUFFER
+void 	buffer(t_buffer **movements, int instruction);
+//pb 	= 0;
+//ra	= 1;
+//rb	= 2;
+//rra	= 3;
+//rrb	= 4;
