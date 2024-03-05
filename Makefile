@@ -6,7 +6,7 @@
 #    By: xortega <xortega@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 11:02:31 by xortega           #+#    #+#              #
-#    Updated: 2024/03/01 16:54:15 by xortega          ###   ########.fr        #
+#    Updated: 2024/03/05 13:36:19 by xortega          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ $(NAME): $(OBJS)
 	@make -C $(LIBFT_PATH)
 	@cp $(LIBFT_PATH)$(LIBFT) ./$(LIBFT)
 	@sleep 0.2;
-	@$(CC) $(CFLAGS) -o $(NAME) $(LIBFT) $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@printf "\033[0;32;3mPUSH_SWAP ✅\n\n"
 
 $(OBJ_DIR):

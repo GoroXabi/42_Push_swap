@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:30:32 by xortega           #+#    #+#             */
-/*   Updated: 2024/03/05 13:09:46 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/05 14:01:54 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,18 +123,14 @@ t_stack	*find_close_to_small(t_stack **stack, int total_ints, int room_up, int t
 		}
 		current = current->next;
 	}
-//	if (anti_foe->number == 0)
-//		free(anti_foe);
+	if (anti_foe->number == 0)
+		free(anti_foe);
 	if (foe->number == INT_MAX && anti_foe->number == INT_MAX)
-		return(find_close_to_small(stack, total_ints, room_up + 10, threshold));
+		return(find_close_to_small(stack, total_ints, room_up + 5, threshold));
 	else if (foe->position <= (left_in_stack(stack) - anti_foe->position))
 		return(foe);
 	else if (foe->position > (left_in_stack(stack) - anti_foe->position))
 		return(anti_foe);
-//	if (foe->position < anti_foe->position - left_in_stack(stack))
-//		return(foe);
-//	if (foe->position > anti_foe->position - left_in_stack(stack))
-//		return(anti_foe);
 	return(foe);
 }
 t_stack	*find_large(t_stack **stack)
@@ -180,7 +176,7 @@ void	up_close_to_small(t_stack **stack_a, t_buffer **movements, int threshold, i
 	int		to_up_num;
 	int		tip_a;
 
-	to_up = find_close_to_small(stack_a, total_ints, 10, threshold);
+	to_up = find_close_to_small(stack_a, total_ints, 5, threshold);
 	to_up_num = to_up->number;
 	if (to_up_num == 0 || to_up_num > total_ints)
 	{
@@ -297,7 +293,9 @@ void search_next_b2(t_stack **stack_b, t_buffer **movements, int number, int bot
 		else
 			current = current->next;
 	}
-	up_by_num_b(stack_b, movements, foe);
+	//ft_printf("foe: %d\n", foe);
+	if (foe > top)
+		up_by_num_b(stack_b, movements, foe);
 }
 void	case_3_bottom(t_stack **stack_a, int total_ints, t_buffer **movements)
 {
@@ -431,6 +429,7 @@ void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b,  t_buffer **movement
 	top = tip(stack_b)->number;
 	while (left_in_stack(stack_a) > 3 && total_ints > 7)
 	{
+	//	print_list(stack_a, stack_b, total_ints);
 		up_close_to_small(stack_a, movements, threshold, total_ints);
 		search_next_b2(stack_b, movements, tip(stack_a)->number, botom, top);
 		pb(stack_a, stack_b, movements);
