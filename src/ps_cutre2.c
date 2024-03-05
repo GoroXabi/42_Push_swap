@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 12:30:32 by xortega           #+#    #+#             */
-/*   Updated: 2024/03/05 12:22:43 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/05 13:09:46 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,28 @@ void search_next_b(t_stack **stack_b, t_buffer **movements, int number)
 	}
 	up_by_num_b(stack_b, movements, foe);
 }
+void search_next_b2(t_stack **stack_b, t_buffer **movements, int number, int botom, int top)
+{
+	t_stack	*current;
+	int		foe;
+	
+	current = tip(stack_b);
+	foe = 0;
+	while (current->number != botom)
+		current = current->next;
+	if (!current)
+		current = tip(stack_b);
+	while (current->number != top)
+	{
+		if (current->number > foe && current->number < number)
+			foe = current->number;
+		if (!current->next)
+			current = tip(stack_b);
+		else
+			current = current->next;
+	}
+	up_by_num_b(stack_b, movements, foe);
+}
 void	case_3_bottom(t_stack **stack_a, int total_ints, t_buffer **movements)
 {
 	t_stack	*a;
@@ -393,7 +415,9 @@ void cost_check(t_stack **stack_a, t_stack **stack_b)
 //}
 void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b,  t_buffer **movements, int total_ints)
 {
-	int  threshold;
+	int	threshold;
+	int	botom;
+	int	top;
 	
 	threshold = total_ints/2;
 	while (left_in_stack(stack_a) > threshold && total_ints > 7)
@@ -403,10 +427,12 @@ void algoritmo_cutre2(t_stack **stack_a, t_stack **stack_b,  t_buffer **movement
 		pb(stack_a, stack_b, movements);
 	}
 	threshold = total_ints - 3;
+	botom = base(stack_b)->number;
+	top = tip(stack_b)->number;
 	while (left_in_stack(stack_a) > 3 && total_ints > 7)
 	{
 		up_close_to_small(stack_a, movements, threshold, total_ints);
-		search_next_b(stack_b, movements, tip(stack_a)->number);
+		search_next_b2(stack_b, movements, tip(stack_a)->number, botom, top);
 		pb(stack_a, stack_b, movements);
 	}
 //	print_list(stack_a, stack_b, total_ints);
