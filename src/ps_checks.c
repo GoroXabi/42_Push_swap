@@ -6,26 +6,42 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 11:58:38 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/14 12:38:45 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:07:09 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"push_swap.h"
+#include "push_swap.h"
 
-void check_duplicates(t_stack **stack_a)
+void	check_max_min(t_stack **stack_a)
 {
-	int 	checking;
 	t_stack	*current;
 
 	current = *stack_a;
-
-	while(current->next)
+	while (current->next)
 	{
+		current = current->next;
+		if (current->number >= INT_MAX || current->number <= INT_MIN)
+		{
+			ft_printf("Error");
+			free_list(*stack_a);
+			exit(1);
+		}
+	}
+}
 
+void	check_duplicates(t_stack **stack_a)
+{
+	int		checking;
+	t_stack	*current;
+
+	current = *stack_a;
+	while (current->next)
+	{
 		checking = current->number;
 		current = current->next;
 		if (checking == current->number)
 		{
+			free_list(*stack_a);
 			ft_printf("Error");
 			exit(1);
 		}

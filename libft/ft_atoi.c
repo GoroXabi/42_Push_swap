@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:56:50 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/05 10:52:45 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/11 12:59:55 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	ft_minus(const char *s, int x)
 
 int	ft_atoi(const char *str)
 {
-	int	j;
-	int	c;
-	int	x;
+	long int	j;
+	long int	c;
+	long int	x;
 
 	x = 0;
 	j = -1;

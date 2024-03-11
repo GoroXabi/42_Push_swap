@@ -6,16 +6,16 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:34:31 by xortega           #+#    #+#             */
-/*   Updated: 2024/02/19 12:14:55 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:06:29 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"push_swap.h"
+#include "push_swap.h"
 
-void change_to_index(int srch, int index, t_stack **obj, t_stack **src)
+void	change_to_index(int srch, int index, t_stack **obj, t_stack **src)
 {
-	t_stack *current_obj;
-	t_stack *current_src;
+	t_stack	*current_obj;
+	t_stack	*current_src;
 
 	current_obj = *obj;
 	current_src = *src;
@@ -24,13 +24,13 @@ void change_to_index(int srch, int index, t_stack **obj, t_stack **src)
 		current_obj = current_obj->next;
 		current_src = current_src->next;
 	}
-		current_obj->number = index;
+	current_obj->number = index;
 }
 
-t_stack *indexing_ints(int total_ints, t_stack **stack_a)
+t_stack	*indexing_ints(int total_ints, t_stack **stack_a)
 {
-	t_stack *new_stack;
-	t_stack *c_stack_a;
+	t_stack	*new_stack;
+	t_stack	*c_stack_a;
 	int		big;
 	int		small;
 	int		count;
@@ -43,7 +43,7 @@ t_stack *indexing_ints(int total_ints, t_stack **stack_a)
 	while (++count < total_ints)
 	{
 		small = INT_MIN;
-		while(c_stack_a)
+		while (c_stack_a)
 		{
 			if (small < c_stack_a->number && c_stack_a->number < big)
 				small = c_stack_a->number;
@@ -71,7 +71,7 @@ int	get_ints(const char *argv[], int argc, t_stack **stack_a)
 	char	**splited_argv;
 	int		current_arg;
 	int		c_word;
-	int 	total_ints;
+	int		total_ints;
 
 	current_arg = 1;
 	total_ints = 0;
@@ -91,12 +91,12 @@ int	get_ints(const char *argv[], int argc, t_stack **stack_a)
 	}
 	return (total_ints);
 }
+
 void	init_stack_b(int total_ints, t_stack **stack_b)
 {
-	int 	current_int;
+	int	current_int;
 
 	current_int = 0;
-
 	while (++current_int <= total_ints)
 		new_node(0, 0, stack_b);
 }

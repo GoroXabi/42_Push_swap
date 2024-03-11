@@ -6,7 +6,7 @@
 /*   By: xortega <xortega@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 14:27:18 by xortega           #+#    #+#             */
-/*   Updated: 2024/03/01 12:05:15 by xortega          ###   ########.fr       */
+/*   Updated: 2024/03/07 13:22:10 by xortega          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
-
-typedef	struct s_buffer
-{
-	int				instruction;
-	struct s_buffer *next;
-}					t_buffer;
 
 typedef struct s_struct
 {

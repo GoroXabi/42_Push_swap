@@ -6,7 +6,7 @@
 #    By: xortega <xortega@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 11:02:31 by xortega           #+#    #+#              #
-#    Updated: 2024/03/05 13:36:19 by xortega          ###   ########.fr        #
+#    Updated: 2024/03/11 13:38:26 by xortega          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@ SRC_PATH	:=	src
 LIBFT		:=	libft.a
 LIBFT_PATH	:=	libft/
 OBJ_DIR		:=	obj
-SOURCES		:=	push_swap.c ps_checks.c ps_parse.c ps_lists.c \
-				ps_movements_a.c ps_movements_b.c ps_buffer.c \
-				ps_trivial_cases.c ps_cutre2.c
+SOURCES		:=	push_swap.c ps_parse.c ps_checks.c ps_lists.c ps_radix.c \
+				ps_movements_b.c  ps_movements_a.c ps_trivial_cases.c \
+				ps_utils.c
 OBJS		:=	$(SOURCES:%.c=$(OBJ_DIR)/%.o)
 CC			:=	gcc
 CFLAGS		:=	-Wall -Wextra -Werror -I./includes
